@@ -109,10 +109,16 @@ def dinosaur_list():
     rq=requests.request('get',url=url,headers=headers,params=data)
     print(rq.url)
     # dirt=json.loads()
-    print(rq.json())
+    return rq.json().get('data')
+
+def list(tolist):
+    for i in tolist:
+        dict=i
+        print(i)
+    return dict
 
 
 
 if __name__ == '__main__':
     # dr_get_sms_code(1778050842)
-    dinosaur_list()
+    list(dinosaur_list())
