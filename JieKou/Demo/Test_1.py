@@ -117,8 +117,19 @@ def list(tolist):
         print(i)
     return dict
 
+def set_device():#
+    for i in range(200,201):
+        id=i
+        print(id)
+    data={
+        'name':'device_200',
+        'userId':'200'
+    }
+    rq=requests.request('get',url='http://39.108.76.62:7502/dr-game/mobile/test/set_device',params=data)
+    print(rq.text)
 
 
 if __name__ == '__main__':
     # dr_get_sms_code(1778050842)
-    list(dinosaur_list())
+    #list(dinosaur_list())
+    set_device()
