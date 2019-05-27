@@ -51,15 +51,15 @@ class sql():
                '"%s",' \
                '"%s",' \
                '0,' \
-               '"devices_%s",' \
-               '"lanya_%s",' \
+               '"db-957992960-b827eb%s",' \
+               '"DragonBox-%s",' \
                '1,' \
                '"%s",' \
                '"%s",' \
-               '"14400000001",' \
+               '"1440000000%s",' \
                '"0x3de14dde56a9c78704bcd7648f7a8c9ff104e59d",' \
                '"30199386c4f84ba005f5988d26c7e8a117947943",1,' \
-               '1)' % (userID, nowtime, nowtime, userID, userID, nowtime, userID)
+               '1)' % (userID+1000, nowtime, nowtime, userID, userID, nowtime, userID+199,userID)
 
         List=[sql1,sql2,sql3,sql4,sql5]
         return  List
@@ -87,8 +87,36 @@ def mysql_test(sql,*nosql):
     cursor.close()
 
     db.close()
+def gotest ():
+
+    for userID in range(51,101):
+        cursor = db.cursor()
+        sql1 = 'insert into dr_device values ("%s",' \
+               '"%s",' \
+               '"%s",' \
+               '0,' \
+               '"db-957992960-b827eb%sx",' \
+               '"DragonBox-%s",' \
+               '1,' \
+               '"%s",' \
+               '"%s",' \
+               '"1440000000%s",' \
+               '"0x3de14dde56a9c78704bcd7648f7a8c9ff104e59d",' \
+               '"30199386c4f84ba005f5988d26c7e8a117947943",1,' \
+               '1)' % (userID + 1000, nowtime, nowtime, userID, userID, nowtime, userID + 200, userID+1)
+        print(sql1)
+
+        cursor.execute(sql1)
+        db.commit()
+
+def zifu(z):
+    for i in z:
+        print(i)
+
 
 if __name__ == '__main__':
-    print("he")
-    sql=sql.sql(202, nowtime)
-    mysql_test(sql,1,2,3,4)
+    # print("he")
+    # sql=sql.sql(1, nowtime)
+    # mysql_test(sql,1,2,3,4)
+    # gotest()
+    zifu('asdasdada')

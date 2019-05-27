@@ -129,7 +129,29 @@ def set_device():#
     print(rq.text)
 
 
+
+def lian():
+    rq=requests.request('get',url='https://app-dr.jiuyuesoft.cn:30443/dr-ethereum/web3_info/get_user_transactions?accountAddr=&contractType=Dragon&pageNum=1&pageSize=50')
+    rq1=requests.request('get',url='https://app-dr.jiuyuesoft.cn:30443/dr-ethereum/web3_info/get_user_transactions?accountAddr=&contractType=Bone&pageNum=1&pageSize=50')
+    # print(rq.text)
+    # print(rq1.text)
+    print(rq1.status_code)
+    print(rq.status_code)
+
+
+def str(str,str2):
+    for i in str:
+        for k in str2:
+            if (i==k):
+                print(i)
+
 if __name__ == '__main__':
     # dr_get_sms_code(1778050842)
     #list(dinosaur_list())
-    set_device()
+    # set_device()
+    # i=0
+    # while 1==1:
+    #     i = i + 1
+    #     print('访问次数:%s'%i)
+    #     lian()
+    str('123','我3')
