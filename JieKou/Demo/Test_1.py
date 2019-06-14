@@ -2,6 +2,8 @@ import  requests
 import  urllib3
 import  json
 import  urllib
+import sys
+
 
 def dr_RAS ():
     url='http://39.108.76.62:7502/dr-game/mobile/rsa/public_key'
@@ -86,36 +88,33 @@ def dr_sms_login():
 
 def dinosaur_list():
     url='http://39.108.76.62:7502/dr-game/mobile/user/dinosaur/list'
-    ras=dr_RAS()
-    dr = {"token": "NzVkNDI0YmMtOWI2My00ZTkwLTlkZjUtMTgwMDMyZDAzYjU5",
+    dr = {"token":"OWMxMjViMjktZmM3Ny00ZTIwLWIyNjEtNTdlOTc1MDBhMDA2",
           "loginType": "mobile",
           "mobileCode": "2A73B5FE-391D-4EC5-8B21-CC7E2D939795",
-          "random": "NjE5OTg3Mg=="}
+          "random": "MzAwMjcxNg=="}
+
     headers={
         'Accept': '*/*',
-        'User-Agent': 'DragonBox/1.3.4 (iPhone; iOS 11.0.3; Scale/2.00)',
+        'User-Agent': 'DragonBox/1.3.6 (iPhone; iOS 12.2; Scale/2.00)',
         'Accept-Language': 'zh-Hans-CN;q=1',
         'Accept-Encoding': 'gzip, deflate',
-        'Authorization': '%s' % (ras),
+        'Authorization': dr_RAS(),
         'Connection': 'keep-alive',
-        'dr':'%s'%(json.dumps(dr))
+        'dr':json.dumps(dr),
 
     }
     data={
         'pageNum':'1',
-        'pageSize':'20'
+        'pageSize':'20',
 
     }
     rq=requests.request('get',url=url,headers=headers,params=data)
     print(rq.url)
+    print(rq.text)
     # dirt=json.loads()
     return rq.json().get('data')
 
-def list(tolist):
-    for i in tolist:
-        dict=i
-        print(i)
-    return dict
+
 
 def set_device():#
     for i in range(200,201):
@@ -144,14 +143,43 @@ def str(str,str2):
         for k in str2:
             if (i==k):
                 print(i)
+    f = [ x + y*2 for x in 'ABCDE1' for y in '1234567']
+    print(f)
+    f = [x ** 2 for x in range(1, 100)]
+    print(f)
+    print(sys.getsizeof(f))
+
+
+def my_bone_new():
+    url='http://39.108.76.62:7502/dr-game/mobile/user/bone/my_bone_new'
+    dr = {"token":"OWMxMjViMjktZmM3Ny00ZTIwLWIyNjEtNTdlOTc1MDBhMDA2",
+          "loginType": "mobile",
+          "mobileCode": "2A73B5FE-391D-4EC5-8B21-CC7E2D939795",
+          "random": "MzAwMjcxNg=="}
+
+    headers={
+        'Accept': '*/*',
+        'User-Agent': 'DragonBox/1.3.6 (iPhone; iOS 12.2; Scale/2.00)',
+        'Accept-Language': 'zh-Hans-CN;q=1',
+        'Accept-Encoding': 'gzip, deflate',
+        'Authorization': dr_RAS(),
+        'Connection': 'keep-alive',
+        'dr':json.dumps(dr),
+
+    }
+    data={
+        
+    }
+    requests.request('post',url=url,headers=headers,data='')
 
 if __name__ == '__main__':
-    # dr_get_sms_code(1778050842)
-    #list(dinosaur_list())
+    # dr_RAS()
+    print(dinosaur_list())
+
     # set_device()
     # i=0
     # while 1==1:
     #     i = i + 1
     #     print('访问次数:%s'%i)
     #     lian()
-    str('123','我3')
+    # str('123','我')

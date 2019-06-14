@@ -89,7 +89,7 @@ def mysql_test(sql,*nosql):
     db.close()
 def gotest ():
 
-    for userID in range(51,101):
+    for userID in range(1,101):
         cursor = db.cursor()
         sql1 = 'insert into dr_device values ("%s",' \
                '"%s",' \
@@ -118,5 +118,5 @@ if __name__ == '__main__':
     # print("he")
     # sql=sql.sql(1, nowtime)
     # mysql_test(sql,1,2,3,4)
-    # gotest()
-    zifu('asdasdada')
+    gotest()
+    #zifu('asdasdada')

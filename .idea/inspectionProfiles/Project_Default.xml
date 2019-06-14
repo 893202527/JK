@@ -6,6 +6,8 @@
         <list>
           <option value="Contact_Android.Testing.MyPhone" />
           <option value="DR_Test.Contact_Android.Testing.MyPhone" />
+          <option value="JieKou.Demo.dr_flask.mgdb" />
+          <option value="mongodb" />
         </list>
       </option>
     </inspection_tool>
