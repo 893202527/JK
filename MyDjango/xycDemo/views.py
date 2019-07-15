@@ -1,10 +1,6 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-
-
+from django.shortcuts import render,HttpResponse
+import json
 from . import models
-
-
 
 def index(request):
     latest_question_list = models.Question.objects.order_by()
@@ -23,19 +19,24 @@ def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
 
 
-
 def register_user(requsert):
-    if requsert.method=='post':
-        nickName=requsert.POST.get('nickname')
-        phoneNumber = requsert.POST.get('phoneNumber')
-        username = requsert.POST.get('username')
-        sex = requsert.POST.get('sex')
-        age=requsert.POST.get('age')
-        password = requsert.POST.get('password')
+    if  requsert.method=='POST' and requsert.POST:
 
-        models.User.phoneNumber=phoneNumber
-        models.User.username=username
-        models.User.password=password
-        models.User.sex=sex
-        models.User.nickName=nickName
-        models.User.nickName=age
+        phoneNumber = requsert.POST.get('phoneNumber')
+        if models.User.objects.filter(phoneNumber=phoneNumber)!=None:
+            nickName=requsert.POST.get('nickname')
+            username = requsert.POST.get('username')
+            sex = requsert.POST.get('sex')
+            age=requsert.POST.get('age')
+            password = requsert.POST.get('password')
+
+            user=models.User(nickName=nickName,password=password,username=username,sex=sex,age=age,phoneNumber=phoneNumber)
+            user.save()
+            msg={'msg':'successful','msg_code':'1'}
+            return HttpResponse(json.dumps(msg),content_type='application/json;charset=utf-8')
+        else:
+            msg = {'msg': '已注册', 'msg_code': '1001'}
+            return HttpResponse(json.dumps(msg),content_type='application/json;charset=utf-8')
+    else:
+        msg = {'msg': '请求方式错误', 'msg_code': '2002'}
+        return HttpResponse(json.dumps(msg), content_type='application/json;charset=utf-8')
