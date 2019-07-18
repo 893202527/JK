@@ -4,8 +4,9 @@ from . import models
 
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from .serializer import  UserSerializer, GroupSerializer
-
+from .serializer import  UserSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 # Create your views here.
 
@@ -15,10 +16,10 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class GroupViewSet(viewsets.ModelViewSet):
-    '''查看，编辑组的界面'''
-    queryset = Group
-    serializer_class = GroupSerializer
+# class GroupViewSet(viewsets.ModelViewSet):
+#     '''查看，编辑组的界面'''
+#     queryset = Group
+#     serializer_class = GroupSerializer
 
 
 def index(request):
@@ -40,26 +41,29 @@ def results(request, question_id):
 def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
 
+class Userview(APIView):
+    def get(self,request,format=None):
+        user=models.User.objects.all()
+        serializer=UserSerializer(user,many=True)
+        return Response(serializer.data)
+    def register_user(requsert):
+        if requsert.method == 'POST' and requsert.POST:
+            phoneNumber = requsert.POST.get('phoneNumber')
+            if models.User.objects.filter(phoneNumber=phoneNumber) != None:
+                nickName = requsert.POST.get('nickname')
+                username = requsert.POST.get('username')
+                sex = requsert.POST.get('sex')
+                age = requsert.POST.get('age')
+                password = requsert.POST.get('password')
 
-def register_user(requsert):
-    if requsert.method == 'POST' and requsert.POST:
-
-        phoneNumber = requsert.POST.get('phoneNumber')
-        if models.User.objects.filter(phoneNumber=phoneNumber) != None:
-            nickName = requsert.POST.get('nickname')
-            username = requsert.POST.get('username')
-            sex = requsert.POST.get('sex')
-            age = requsert.POST.get('age')
-            password = requsert.POST.get('password')
-
-            user = models.User(nickName=nickName, password=password, username=username, sex=sex, age=age,
-                               phoneNumber=phoneNumber)
-            user.save()
-            msg = {'msg': 'successful', 'msg_code': '1'}
-            return HttpResponse(json.dumps(msg), content_type='application/json;charset=utf-8')
+                user = models.User(nickName=nickName, password=password, username=username, sex=sex, age=age,
+                                   phoneNumber=phoneNumber)
+                user.save()
+                msg = {'msg': 'successful', 'msg_code': '1'}
+                return HttpResponse(json.dumps(msg), content_type='application/json;charset=utf-8')
+            else:
+                msg = {'msg': '已注册', 'msg_code': '1001'}
+                return HttpResponse(json.dumps(msg), content_type='application/json;charset=utf-8')
         else:
-            msg = {'msg': '已注册', 'msg_code': '1001'}
+            msg = {'msg': '请求方式错误', 'msg_code': '2002'}
             return HttpResponse(json.dumps(msg), content_type='application/json;charset=utf-8')
-    else:
-        msg = {'msg': '请求方式错误', 'msg_code': '2002'}
-        return HttpResponse(json.dumps(msg), content_type='application/json;charset=utf-8')
