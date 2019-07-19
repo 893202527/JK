@@ -7,6 +7,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'users',views.UserViewSet,base_name='user')
+router.register(r'singinUser',views.singin_User,base_name='singinUser')
 # router.register(r'groups',views.GroupViewSet,base_name='group')
 
 
@@ -17,17 +18,10 @@ schema_view = get_schema_view(title='Users API', renderer_classes=[OpenAPIRender
 
 
 urlpatterns = [
-    # path('', views.index, name='index'),
-    path('<int:question_id>/', views.detail, name='detail'),
-    path('<int:question_id>/results/', views.results, name='results'),
-    path('<int:question_id>/vote/', views.vote, name='vote'),
-    path('register_user/', views.Userview, name='register_user'),
-    #path('UserViewSet/',views.UserSerializer,name='UserViewSet'),
-
-
-    url(r'^docs/', schema_view, name="docs"),
-    url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
+    url(r'^docs/', schema_view, name="docs"),
+    #url(r'^admin/', admin.site.urls),
+
     # drf登录
     url(r'^xycDemo-auth/', include('rest_framework.urls', namespace='rest_framework'))
 
