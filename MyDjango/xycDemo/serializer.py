@@ -5,8 +5,16 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = "__all__"
-# class GroupSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model =Group
-#         fields = "__all__"
+        ordering = ['id']
+        #depth=1  查询层1,2,3
+        fields = '__all__'
+        # 除了nid都查
+        # exclude = ['nid']
+
+class userlogin(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=('phoneNumber','password')
+        read_only=('phoneNumber')
+
+
