@@ -15,6 +15,11 @@ class userlogin(serializers.ModelSerializer):
     class Meta:
         model=User
         fields=('phoneNumber','password')
-        read_only=('phoneNumber')
+        extra_kwargs = {'password': {'write_only': True}}
+        # read_only_fields =['phoneNumber']
 
 
+class userInformation(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=('nickName','phoneNumber','username','age')

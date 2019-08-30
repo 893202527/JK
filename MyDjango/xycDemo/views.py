@@ -13,43 +13,59 @@ from rest_framework import generics
 from  .  import serializer
 from rest_framework.parsers import FormParser, MultiPartParser
 
+from rest_framework.renderers import JSONRenderer
 
-class userloginView(generics.GenericAPIView,mixins.RetrieveModelMixin):
+
+def msg(status,data):
+    msg={
+        'status':status,
+        'data':data,
+    }
+    return  msg
+
+
+class userloginView(generics.GenericAPIView):
     """用户登陆"""
-
-
+    queryset = models.User.objects.all()
     serializer_class = serializer.userlogin
-    lookup_field = 'phoneNumber'
+
+    # lookup_field = 'phoneNumber'
     def post(self, request, *args, **kwargs):
-        # userlogin=models.User.objects.get(phoneNumber=request.POST.get('phoneNumber'))
-        # print(userlogin)
-        queryset = serializer.userlogin(data=request.POST)
-        print(queryset)
-        print(queryset.is_valid())
-        if queryset.is_valid():
-            return Response(queryset.data,status=status.HTTP_200_OK)
+
+        userlogin=models.User.objects.filter(phoneNumber=request.data.get('phoneNumber'),password=request.data.get('password'))
+        u=models.User.objects.get(phoneNumber=request.data.get('phoneNumber'))
+
+
+        if not  userlogin:
+            return Response(msg('用户不存在',None),status=status.HTTP_200_OK)
+        elif u.password != request.data.get('password'):
+            return Response(msg('请检查账号密码是否一致',None),status=status.HTTP_200_OK)
         else:
-            return Response(queryset.errors,status.HTTP_400_BAD_REQUEST)
+            data=models.User.objects.filter(phoneNumber=request.data.get('phoneNumber'))
+            # print(type(data))
+            s=serializer.userInformation('json', data=data,many=False)#一条数据False
+
+            s.is_valid()
+            print(s.is_valid())
+
+            return Response(s.data,status=status.HTTP_200_OK)
 
 
 
-class UserViewList(generics.GenericAPIView,mixins.RetrieveModelMixin):
+
+class UserViewList(generics.GenericAPIView):
     queryset = models.User.objects.all()
     serializer_class = serializer.userlogin
     def get(self, request, *args, **kwargs):
         """获取用户"""
         print('进入get请求')
         return self.retrieve(request,*args, **kwargs)
-
-
-
     def post(self, request, *args, **kwargs):
         """创建用户"""
         print('进入post请求')
-        queryset=UserSerializer(data=request.POST)
+        queryset=UserSerializer(data=request.data)
         if  queryset.is_valid():
             queryset.save()
-
             msg={
                 'msg':'创建成功',
                 'code':'1'

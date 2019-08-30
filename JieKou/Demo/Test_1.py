@@ -167,15 +167,44 @@ def my_bone_new():
         'dr':json.dumps(dr),
 
     }
-    data={
-        
+    data = {
+        'pageNum': '1',
+        'pageSize': '20',
+
     }
     requests.request('post',url=url,headers=headers,data='')
 
+def my_sell():
+    url = 'http://39.108.76.62:7502/dr-game/mobile/user/bone/sell/my_sell'
+    dr = {"token": "OWMxMjViMjktZmM3Ny00ZTIwLWIyNjEtNTdlOTc1MDBhMDA2",
+         "loginType": "mobile",
+          "mobileCode": "2A73B5FE-391D-4EC5-8B21-CC7E2D939795",
+          "random": "MzAwMjcxNg=="}
+    # headers=[]
+    # headers['token'] ="OWMxMjViMjktZmM3Ny00ZTIwLWIyNjEtNTdlOTc1MDBhMDA2"
+    # headers["Content-Length"] = "9"
+    headers = {
+        'Accept':'*/*',
+        # 'dr':json.dumps(dr),
+        'User-Agent': 'DragonBox/1.3.6 (iPhone; iOS 12.2; Scale/2.00)',
+        'Accept-Language': 'zh-Hans-CN;q=1',
+        'Accept-Encoding': 'gzip, deflate',
+        'Authorization': json.dumps(dr),
+        'Connection': 'keep-alive',
+    }
+    data = {
+        'pageNum': '1',
+        'pageSize': '20',
+        'sellStatus':'end',
+
+    }
+    rq=requests.request('get', url=url, headers=headers, params=data)
+    print(rq.text)
+
 if __name__ == '__main__':
     # dr_RAS()
-    print(dinosaur_list())
-
+    my_sell()
+    # print(dinosaur_list())
     # set_device()
     # i=0
     # while 1==1:

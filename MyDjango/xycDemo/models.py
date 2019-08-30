@@ -23,7 +23,8 @@ class User(models.Model):
                  'nickName':self.nickName,
                  'age':self.age,
                  'sex':self.sex,
-                 'username':self.username
+                 'username':self.username,
+                 'password':self.password
                 }
 
         return json.dumps(smart)
