@@ -41,15 +41,15 @@ class userloginView(generics.GenericAPIView):
         elif u.password != request.data.get('password'):
             return Response(msg('请检查账号密码是否一致',None),status=status.HTTP_200_OK)
         else:
-            data=models.User.objects.filter(phoneNumber=request.data.get('phoneNumber'))
+            data=models.User.objects.filter(phoneNumber=request.data.get('phoneNumber')).first()
             # print(type(data))
-            s=serializer.userInformation('json', data=data,many=False)#一条数据False
-
-            s.is_valid()
-            print(s.is_valid())
+            s=serializer.userlogin(data=request.data,many=False)#一条数据False
+            print(type(s))
+            s.is_valid(raise_exception=True)
 
             return Response(s.data,status=status.HTTP_200_OK)
-
+            # else:
+            #     return Response(s.errors)
 
 
 
