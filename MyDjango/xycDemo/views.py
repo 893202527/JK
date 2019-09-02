@@ -12,9 +12,9 @@ from rest_framework import mixins
 from rest_framework import generics
 from  .  import serializer
 from rest_framework.parsers import FormParser, MultiPartParser
-
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.renderers import JSONRenderer
-
+from . import filters
 
 def msg(status,data):
     msg={
@@ -28,7 +28,8 @@ class userloginView(generics.GenericAPIView):
     """用户登陆"""
     queryset = models.User.objects.all()
     serializer_class = serializer.userlogin
-
+    filter_backends = (DjangoFilterBackend,)
+    search_fields=('password')
     # lookup_field = 'phoneNumber'
     def post(self, request, *args, **kwargs):
 
@@ -41,13 +42,13 @@ class userloginView(generics.GenericAPIView):
         elif u.password != request.data.get('password'):
             return Response(msg('请检查账号密码是否一致',None),status=status.HTTP_200_OK)
         else:
-            data=models.User.objects.filter(phoneNumber=request.data.get('phoneNumber')).first()
-            # print(type(data))
-            s=serializer.userlogin(data=request.data,many=False)#一条数据False
-            print(type(s))
-            s.is_valid(raise_exception=True)
+            data=models.User.objects.filter(phoneNumber=request.data.get('phoneNumber'))
+            print(data)
+            # s=serializer.userlogin(data=data,many=False)#一条数据False
+            # print(type(s))
+            # s.is_valid(raise_exception=True)
 
-            return Response(s.data,status=status.HTTP_200_OK)
+            return HttpResponse(data,status=status.HTTP_200_OK)
             # else:
             #     return Response(s.errors)
 
